@@ -27,14 +27,44 @@ h1 {
 }
 
 .world .player {
-  background:white;
+  background:url(../img/tank.png) 0 0 no-repeat transparent;
   position:absolute;
   width:16px;
   height:16px;
   padding:2px;
 }
+
+  .world .player.up{
+  	-webkit-transform:rotate(0deg);
+  }
+  
+  .world .player.down{
+  	-webkit-transform:rotate(180deg);
+  }
+  
+  .world .player.left{
+  	-webkit-transform:rotate(270deg);
+  }
+  
+  .world .player.right{
+  	-webkit-transform:rotate(90deg);
+  }
+  
   .world .you {
-    background:orange;
+    background:url(../img/you.png) 0 0 no-repeat transparent;
+  }
+  
+  .world .you.left{
+  	-webkit-transform:rotate(270deg);
+  }
+  .world .you.up{
+  	-webkit-transform:rotate(0deg);
+  }
+  .world .you.down{
+  	-webkit-transform:rotate(180deg);
+  }
+  .world .you.right{
+  	-webkit-transform:rotate(90deg);
   }
 
 .world .bullet {
@@ -53,11 +83,15 @@ h1 {
   float:left;
 }
   .cell.grass {
-    background:green;
+    background:url(../img/texture-grass.png) 0 0 no-repeat;
   }
   .cell.rock {
-    background:grey;
+    background:url(../img/texture-rock.png) 0 0 no-repeat;
   }
 .world .row {
   clear:both;
+}
+
+.world .cell.rock:nth-of-type(5n+3){
+	background:url(../img/texture-rock-crack.png) 0 0 no-repeat;
 }

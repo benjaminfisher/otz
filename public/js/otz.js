@@ -27,7 +27,69 @@ socket.on('bullet-destroyed', function(data) {
 
 socket.on('player-killed', function(data) {
   killPlayer(data.player, data.killer);
+  console.log(data.player.nick + " has bit the big one.");
+  toast(data.player.nick + " has snuffed it!");
 });
+
+socket.on('player-joined', function(data){
+	toast(data.player.nick + " has entered ThunderDome!");
+});
+
+/* Movement methods */
+jwerty.key('w', function(){
+	$($('div.you')[0]).removeClass('left down right').addClass('up');
+	  socket.emit('player-move', { dir: "up" });
+});
+
+jwerty.key('a', function(){
+	$($('div.you')[0]).removeClass('up down right').addClass('left');
+	  socket.emit('player-move', { dir: "left" });
+});
+
+jwerty.key('s', function(){
+	$($('div.you')[0]).removeClass('up left right').addClass('down');
+	  socket.emit('player-move', { dir: "down" });
+});
+
+jwerty.key('d', function(){
+	$($('div.you')[0]).removeClass('up down left').addClass('right');
+	  socket.emit('player-move', { dir: "right" });
+});
+
+/* Shooting Methods */
+jwerty.key('space', function(){
+	  socket.emit('player-shoot');
+});
+
+/* Turn Methods */
+jwerty.key('j', function(){
+	$($('div.you')[0])
+		.removeClass('up down left right')
+		.addClass('left');
+	socket.emit('player-turn', { dir: "left" })
+});
+
+jwerty.key('i', function(){
+	$($('div.you')[0])
+		.removeClass('up down left right')
+		.addClass('up');
+	socket.emit('player-turn', { dir: "up" })
+});
+
+jwerty.key('k', function(){
+	$($('div.you')[0])
+		.removeClass('up down left right')
+		.addClass('down');
+	socket.emit('player-turn', { dir: "down" })
+});
+
+jwerty.key('l', function(){
+	$($('div.you')[0])
+		.removeClass('up down left right')
+		.addClass('right');
+	socket.emit('player-turn', { dir: "right" })
+});
+
 
 /* Helper Methods */
 
@@ -54,7 +116,12 @@ var renderPlayer = function(player, you) {
   }
   var offset = $(".row:eq("+player.location.y+") .cell:eq("+player.location.x+")").position();
   if(move) {
+	  
+	// turn other players
+	if(!you) $el.removeClass('up down left right');
     $el.animate(offset, 500/player.speed, "linear");
+    
+    if(!you) $el.addClass(player.dir);
   } else {
     $el.css(offset).fadeIn();
   }
